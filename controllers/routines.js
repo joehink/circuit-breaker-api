@@ -1,0 +1,78 @@
+const express = require('express');
+const router = express.Router();
+const Routine = require('../models/routines.js');
+
+// Create Routine
+router.post('/', async (req, res) => {
+  // if the user is logged in
+  if (req.session.currentUser) {
+    // append curret user to req.body
+    req.body.createdBy = req.session.currentUser;
+    // Add routine to the database
+    const newRoutine = await Routine.create(req.body);
+    // send back the created routine
+    res.status(200).json(newRoutine);
+  } else {
+    // the user is not logged in
+    // send back an error message
+    res.status(401).json({
+      message: "You must be logged in to create a routine"
+    })
+  }
+});
+
+// Get all routines created by user
+router.get('/', async (req, res) => {
+  // if the user is logged in
+  if (req.session.currentUser) {
+    // find all routines created by currentUser
+    const routines = await Routine.find({
+      createdBy: req.session.currentUser._id
+    });
+    // send response with all routines createdBy currentUser
+    res.status(200).json(routines);
+  } else {
+    // the user is not logged in
+    // send back an error message
+    res.status(401).json({
+      message: "You must be logged in to see routines"
+    })
+  }
+})
+
+// Get one routine
+router.get('/:routineId', async (req, res) => {
+  // if the user is logged in
+  if (req.session.currentUser) {
+    // Query to find routine in db
+    const routine = await Routine.findOne({
+      _id: req.params.routineId
+    });
+
+    // if there is no routine with that id
+    if (!routine) {
+      // send back 404
+      res.status(404).json({
+        message: "This routine no longer exists"
+      });
+    } else if (routine.createdBy == req.session.currentUser._id) {
+      // if routine.createdBy equals currentUser id
+      // send back routine
+      res.status(200).json(routine);
+    } else {
+      // routine.createdBy does not equal currentUser id
+      // routine does not belong to user
+      res.status(401).json({
+        message: "This routine does not belong to you"
+      })
+    }
+  } else {
+    // the user is not logged in
+    // send back an error message
+    res.status(401).json({
+      message: "You must be logged in to see routines"
+    })
+  }
+})
+
+module.exports = router;

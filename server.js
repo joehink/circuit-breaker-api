@@ -24,6 +24,8 @@ app.use('/users', usersController);
 const sessionsController = require('./controllers/sessions.js');
 app.use('/sessions', sessionsController);
 
+const routinesController = require('./controllers/routines.js');
+app.use('/routines', routinesController);
 
 
 app.listen(PORT, () => {
