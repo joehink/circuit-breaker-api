@@ -1,0 +1,26 @@
+{
+  "name": "circuit-breaker-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joehink/circuit-breaker-api.git"
+  },
+  "author": "Joe Hinkley",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/joehink/circuit-breaker-api/issues"
+  },
+  "homepage": "https://github.com/joehink/circuit-breaker-api#readme",
+  "dependencies": {
+    "bcrypt": "^3.0.4",
+    "dotenv": "^6.2.0",
+    "express": "^4.16.4",
+    "express-session": "^1.15.6",
+    "mongoose": "^5.4.17"
+  }
+}
