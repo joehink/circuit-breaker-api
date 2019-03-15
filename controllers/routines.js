@@ -1,47 +1,33 @@
 const express = require('express');
+const passport = require('passport');
+const passportService = require('../services/passport');
 const router = express.Router();
 const Routine = require('../models/routines.js');
 
+const requireAuth = passport.authenticate('jwt', { session: false });
+
 // Create Routine
-router.post('/', async (req, res) => {
-  // if the user is logged in
-  if (req.session.currentUser) {
-    // append curret user to req.body
-    req.body.createdBy = req.session.currentUser;
-    // Add routine to the database
-    const newRoutine = await Routine.create(req.body);
-    // send back the created routine
-    res.status(200).json(newRoutine);
-  } else {
-    // the user is not logged in
-    // send back an error message
-    res.status(401).json({
-      message: "You must be logged in to create a routine"
-    })
-  }
+router.post('/', requireAuth, async (req, res) => {
+  // append curret user to req.body
+  req.body.createdBy = req.session.currentUser;
+  // Add routine to the database
+  const newRoutine = await Routine.create(req.body);
+  // send back the created routine
+  res.status(200).json(newRoutine);
 });
 
 // Get all routines created by user
-router.get('/', async (req, res) => {
-  // if the user is logged in
-  if (req.session.currentUser) {
-    // find all routines created by currentUser
-    const routines = await Routine.find({
-      createdBy: req.session.currentUser._id
-    });
-    // send response with all routines createdBy currentUser
-    res.status(200).json(routines);
-  } else {
-    // the user is not logged in
-    // send back an error message
-    res.status(401).json({
-      message: "You must be logged in to see routines"
-    })
-  }
+router.get('/', requireAuth, async (req, res) => {
+  // find all routines created by currentUser
+  const routines = await Routine.find({
+    createdBy: req.session.currentUser._id
+  });
+  // send response with all routines createdBy currentUser
+  res.status(200).json(routines);
 })
 
 // Get one routine
-router.get('/:routineId', async (req, res) => {
+router.get('/:routineId', requireAuth, async (req, res) => {
   // if the user is logged in
   if (req.session.currentUser) {
     // Query to find routine in db
