@@ -59,4 +59,10 @@ router.delete('/:routineId', requireAuth, async (req, res) => {
   res.json({ deleted: true })
 })
 
+// Update Routine
+router.put('/:routineId', requireAuth, async (req, res) => {
+  await Routine.findByIdAndUpdate(req.params.routineId, req.body);
+  res.json({ updated: true })
+})
+
 module.exports = router;
