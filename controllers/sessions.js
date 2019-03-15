@@ -19,13 +19,4 @@ router.post('/', requireSignIn, async (req, res)=>{
   });
 });
 
-// Log Out
-router.delete('/', (req, res) => {
-  // Destroy current session
-  req.session.destroy(()=>{
-    // Send back empty object
-    res.status(200).json({})
-  });
-})
-
 module.exports = router;
