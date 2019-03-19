@@ -4,6 +4,7 @@ const Schema = mongoose.Schema;
 const exerciseSchema = new Schema({
   name: { type: String, required: true },
   image: { type: String, required: true },
+  dateAddedToRoutine: Date, 
   duration: { type: Number, required: true, default: 30 }
 })
 
