@@ -1,6 +1,9 @@
 {
   "name": "circuit-breaker-api",
   "version": "1.0.0",
+  "engines": {
+    "node": "11.9.0"
+  },
   "description": "",
   "main": "server.js",
   "scripts": {
